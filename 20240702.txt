@@ -1,0 +1,82 @@
+Please find the updated full release as follows,
+
+Statement not found in CTG Report (Encashment Detail Page ) Point 4 Fix and Released, Please checked in detail UAT
+
+ For account locking to halt brute face attack, please create the following table in UAT and test properly. After passing successfully create the table in Production:
+
+/****** Object:  Table [dbo].[SA_User_LoginTry]    Script Date: 6/30/2024 1:28:21 AM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SA_User_LoginTry]') AND type in (N'U'))
+DROP TABLE [dbo].[SA_User_LoginTry]
+GO
+
+/****** Object:  Table [dbo].[SA_User_LoginTry]    Script Date: 6/30/2024 1:28:21 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SA_User_LoginTry](
+      [logUserID] [varchar](50) NULL,
+      [logTry] [bigint] NULL
+) ON [PRIMARY]
+GO
+
+Updated Status:
+
+SL#
+Description
+Status
+Review
+Release Status
+1
+5% Tax Calculation Error in BSP Reinvestment 
+High
+Release by 30th Jun 2024
+Released (30th Jun 2024)
+2
+Maker Cheeker Same In Audit Trial Report 
+Medium
+Please check the user profile, is there any admin right provided to the user profile which allow maker checker both operations. Need detail root-cause analysis about the entries.
+Awaiting for detail analysis
+3
+WDB Report break for large no of script 
+Medium
+Please mention the detail report name.
+4
+Statement not found in CTG Report
+Medium
+Need details for this issue, CTG reports not scoped from the beginning and not discussed earlier.
+Released (02 Jul 2024)
+5
+LCY AND FCY payment Upload feature
+High
+Release by 30th Jun 2024 only based on LCY file format. This requirement has been changed from the beginning. File format has been changed from client due to NCS portal. New LCY format has been delivered this year.  FCY payment Upload file not yet finalized from client end.
+LCY Full Released (30th Jun 2024
+6
+Previous Payment Clear by run query
+High
+Will discussed by tomorrow and close the solution.
+Query Provided (30th Jun 2024
+7
+Duplicate Registration found.
+high
+Will provide a duplicate validation check in the Online Issue Screen release by 30th Jun 2024
+Released (30th Jun 2024)
+8
+Branch wise Commission Report not found 
+Medium
+Please check with the following query
+Query Provided (30th Jun 2024)
+9
+BSP Reinvestment off From 29 June 2019 Issue date
+LOW
+What is the ask regarding the requirement please elaborate in details
+10
+For account locking to halt brute face attack
+High
+Table script provided 
+Released (02 Jul 2024)
+
+
+Thanks

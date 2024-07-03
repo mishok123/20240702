@@ -1,0 +1,19 @@
+SQL for Commission Checking: 
+SELECT        I.SPTypeID, I.DivisionID, I.BranchID, B.BranchName,
+CASE WHEN I.CustomerTypeID <> '03' THEN 1 ELSE 0 END AS NoofNonOrgSale,  
+CASE WHEN I.CustomerTypeID = '03' THEN 1 ELSE 0 END AS NoofOrgSale,  
+I.RegNo AS NoofSale,
+CASE WHEN I.CustomerTypeID <> '03' THEN I.IssueAmount ELSE 0 END AS NonOrgSaleAmount,  
+CASE WHEN I.CustomerTypeID = '03' THEN I.IssueAmount ELSE 0 END AS OrgSaleAmount,
+I.IssueAmount AS TotalSaleAmount,
+CASE WHEN I.CustomerTypeID <> '03' THEN CASE WHEN NOT I.SPTypeID IN ('WDB','DIB','DPB') AND (I.IssueAmount * P.NonOrgCommission/ 100)>500 THEN 500 ELSE I.IssueAmount * P.NonOrgCommission/ 100 END ELSE 0 END  AS NonOrgCommission,
+CASE WHEN I.CustomerTypeID = '03' THEN CASE WHEN NOT I.SPTypeID IN ('WDB','DIB','DPB') AND (I.IssueAmount * P.OrgCommission/ 100)>500 THEN 500 ELSE I.IssueAmount * P.OrgCommission/ 100 END ELSE 0 END AS OrgCommission,
+CASE WHEN I.CustomerTypeID = '03' THEN CASE WHEN NOT I.SPTypeID IN ('WDB','DIB','DPB') AND (I.IssueAmount * P.OrgCommission/ 100)>500 THEN 500 ELSE I.IssueAmount * P.OrgCommission/ 100 END ELSE
+CASE WHEN NOT I.SPTypeID IN ('WDB','DIB','DPB') AND (I.IssueAmount * P.NonOrgCommission/ 100)>500 THEN 500 ELSE I.IssueAmount * P.NonOrgCommission/ 100 END END
+AS TotalCommission
+FROM            SPMS_Issue AS I INNER JOIN
+SPMS_IssueVersion AS IV ON I.IssueTransNo = IV.IssueTransNo INNER JOIN
+SPMS_SPPolicy AS P ON IV.PolicyID = P.PolicyID INNER JOIN
+SPMS_Branch AS B ON I.BranchID = B.BranchID LEFT JOIN
+SPMS_Reinvestment AS R ON I.IssueTransNo = R.NewIssueTransNo
+WHERE R.NewIssueTransNo IS NULL AND (CONVERT(datetime, CONVERT(varchar, IV.IssueDate, 106)) BETWEEN '01-Jan-2024' AND '31-Jan-2024') AND I.SPTypeID IN('3MS') ORDER BY I.SPTypeID, I.DivisionID, I.BranchID
